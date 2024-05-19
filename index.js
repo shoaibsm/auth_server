@@ -5,9 +5,17 @@ const cors = require('cors')
 const { dbConnect } = require('./dbConnect');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
-const originUrl = process.env.ORIGIN_URL
+const cloudinary = require("cloudinary").v2;
 
-dotenv.config()
+dotenv.config('./.env')
+
+// configur cloudinary
+cloudinary.config({
+    secure: true,
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+})
 
 const app = express();
 
@@ -16,10 +24,15 @@ app.use(express.json())
 app.use(morgan('common'))
 app.use(cookieParser());
 
+let origin = 'http://localhost:3001'
+if (process.env.NODE_ENV === 'production') {
+    origin = process.env.ORIGIN_URL
+}
 app.use(cors({
     credentials: true,
-    origin: originUrl || 'http://localhost:3000'
+    origin
 }))
+
 app.use('/', mainRouter)
 
 // app.get('/', (req, res) => {

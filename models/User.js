@@ -13,6 +13,10 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    avatar: {
+        publicId: String,
+        url: String
+    }
 },
     {
         timestamps: true

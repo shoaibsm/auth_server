@@ -1,28 +1,43 @@
 const User = require("../models/User");
 const { error, success } = require("../utils/responseWrapper");
 
-const getUserController = async (req, res) => {
-    try {
-        const curUserId = req.params.userId;
+// const getUserController = async (req, res) => {
+//     try {
+//         const curUserId = req.params.userId;
 
-        if (!curUserId) {
-            return res.send(error(404, 'User id is required'));
+//         if (!curUserId) {
+//             return res.send(error(404, 'User id is required'));
+//         }
+
+//         const user = await User.findById(curUserId);
+
+//         return res.send(success(200, { user }));
+//     } catch (e) {
+//         return res.send(error(500, e.message));
+//     }
+// };
+
+const getMyInfo = async (req, res) => {
+    try {
+        const _id = req._id
+
+        const user = await User.findById(_id)
+
+        if (!user) {
+            return res.send(error(404, 'User not found'))
         }
 
-        const user = await User.findById(curUserId);
+        return res.send(success(200, { user }))
 
-        return res.send(success(200, { user }));
     } catch (e) {
-        return res.send(error(500, e.message));
+        return res.send(500, e.message)
     }
-};
+}
 
 const getAllUserController = async (req, res) => {
     try {
 
         const allUser = await User.find();
-
-        console.log(allUser);
 
         return res.send(success(200, { allUser }))
 
@@ -34,11 +49,13 @@ const getAllUserController = async (req, res) => {
 const deleteUserController = async (req, res) => {
     try {
 
-        const curUserId = req.params.userId
+        // const curUserId = req.params.userId
+        const curUserId = req._id
 
-        if (!curUserId) {
-            return res.send(error(404, 'User Id is required'))
-        }
+
+        // if (!curUserId) {
+        //     return res.send(error(404, 'User Id is required'))
+        // }
 
         // Log the user ID and deletion process
         console.log(`Deleting user with ID: ${curUserId}`);
@@ -74,7 +91,8 @@ const deleteUserController = async (req, res) => {
 }
 
 module.exports = {
-    getUserController,
+    // getUserController,
     getAllUserController,
+    getMyInfo,
     deleteUserController
 };

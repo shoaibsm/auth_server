@@ -16,24 +16,21 @@ module.exports = async (req, res, next) => {
 
         const decoded = jwt.verify(accessToken, process.env.ACCESS_TOKEN_PRIVATE_KEY)
 
-        const _id = decoded._id
+        // send user id in request 
+        req._id = decoded._id
 
-        console.log(`id is ${_id}`);
-
-        const user = await User.findOne({ _id })
-
-        console.log(`user is ${user}`);
+        const user = await User.findById(req._id)
 
         if (!user) {
-            return res.send(error(404, 'Unauthorized User'))
+            return res.send(error(404, 'User Not Found'))
         }
+
+        next()
 
     } catch (e) {
         console.log(e);
         return res.send(error(401, 'Invalid access key'))
     }
-
-    next();
 }
 
 
