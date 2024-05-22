@@ -24,7 +24,7 @@ app.use(express.json())
 app.use(morgan('common'))
 app.use(cookieParser());
 
-let origin = 'http://localhost:3001'
+let origin = 'http://localhost:3000'
 if (process.env.NODE_ENV === 'production') {
     origin = process.env.ORIGIN_URL
 }

@@ -151,7 +151,7 @@ const refreshAccessTokenController = async (req, res) => {
 
 const generateAccessToken = (data) => {
     try {
-        const token = jwt.sign(data, process.env.ACCESS_TOKEN_PRIVATE_KEY, { expiresIn: '1m' })
+        const token = jwt.sign(data, process.env.ACCESS_TOKEN_PRIVATE_KEY, { expiresIn: '10s' })
 
         return token;
 
@@ -162,7 +162,7 @@ const generateAccessToken = (data) => {
 
 const generateRefreshToken = (data) => {
     try {
-        const refreshToken = jwt.sign(data, process.env.REFRESH_TOKEN_PRIVATE_KEY, { expiresIn: '1y' });
+        const refreshToken = jwt.sign(data, process.env.REFRESH_TOKEN_PRIVATE_KEY, { expiresIn: '1m' });
 
         return refreshToken
 
